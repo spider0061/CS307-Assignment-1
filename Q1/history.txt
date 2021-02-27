@@ -1,0 +1,47 @@
+hi
+hello
+cd 
+history
+history
+cd test
+history
+cd ..
+history
+cd test
+cd xyz
+history
+help
+clr
+pause
+[A
+pause
+dsa
+pasue
+pause
+clr
+help
+history
+clr
+jelp
+help
+cd test
+cd
+dir
+dir test
+cd ..
+dir test
+cd
+cd ...
+cd ..
+cd
+dir Shell
+cd test
+cd Shell
+cd
+clr
+help
+environ
+clr
+help
+echo ashutosh
+quit
