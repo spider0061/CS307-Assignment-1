@@ -334,7 +334,7 @@ char **tokenizer(char *line)
       tokens_backup = tokens;
       tokens = realloc(tokens, bufsize * sizeof(char*));
       if (!tokens) {
-		free(tokens_backup);
+    free(tokens_backup);
         fprintf(stderr, "allocation error\n");
         exit(EXIT_FAILURE);
       }
@@ -407,7 +407,7 @@ int main(int argc, char **argv)
     int status;
     do {
       char comd[50];
-      printf("> ");
+      printf("~%s$ ",pwd_environ);
       line = input();
       strcpy(comd,line);
       strcat(comd,"\n");
