@@ -211,28 +211,9 @@ int shell_history(char **args)
 /* 
   Executes the command.
 */
-int begin(char **args)
+int wrong_command(char **args)
 {
-  pid_t pid;
-  int status;
-
-  pid = fork();
-  if (pid == 0) {
-    // Child process
-    if (execvp(args[0], args) == -1) {
-      perror("C shell");
-    }
-    exit(EXIT_FAILURE);
-  } else if (pid < 0) {
-    // Error forking
-    perror("C shell");
-  } else {
-    // Parent process
-    do {
-      waitpid(pid, &status, WUNTRACED);
-    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-  }
-
+  printf("Enter a valid command\n");
   return 1;
 }
 
@@ -253,7 +234,7 @@ int exe(char **args)
     }
   }
 
-  return begin(args);
+  return wrong_command(args);
 }
 
 /* 
@@ -334,7 +315,7 @@ char **tokenizer(char *line)
       tokens_backup = tokens;
       tokens = realloc(tokens, bufsize * sizeof(char*));
       if (!tokens) {
-    free(tokens_backup);
+		free(tokens_backup);
         fprintf(stderr, "allocation error\n");
         exit(EXIT_FAILURE);
       }
