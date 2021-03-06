@@ -4,10 +4,13 @@
 #include <time.h>
 #include <stdlib.h>
 
+// Codes for processes
 // 1. Waiting for Spoons
 // 2. One spoon acquired.
 // 3. Both spoons acquired and eating
 // 4. Thinking (< 2 seconds)
+
+FILE *fptr;
 
 #define NUMBER_OF_PHILOSOPHERS 5
 int a[5];
@@ -15,30 +18,39 @@ int a[5];
 pthread_mutex_t chopsticks[NUMBER_OF_PHILOSOPHERS];
 pthread_t philosophers[NUMBER_OF_PHILOSOPHERS];
 pthread_attr_t attributes[NUMBER_OF_PHILOSOPHERS];
+pthread_rwlock_t rwlock = PTHREAD_RWLOCK_INITIALIZER;
 
 int stat[5]; 
 
 void print_status() {
-	for (int i = 0; i < NUMBER_OF_PHILOSOPHERS; ++i) {
+    pthread_rwlock_wrlock(&rwlock);
+    fptr = fopen("A.txt", "a");
+    for (int i = 0; i < NUMBER_OF_PHILOSOPHERS; ++i) {
 		if(stat[i]==1) {
+			fprintf(fptr,"S%d: Waiting for spoons.\n", i);
 			printf("S%d: Waiting for spoons.\n", i);
 		}
 		if(stat[i]==2) {
+			fprintf(fptr,"S%d: One spoon acquired.\n", i);
 			printf("S%d: One spoon acquired.\n", i);
 		}
 		if(stat[i]==3) {
+			fprintf(fptr,"S%d: Both spoons acquired and eating.\n", i);	
 			printf("S%d: Both spoons acquired and eating.\n", i);
 		}
 		if(stat[i]==4) {
+			fprintf(fptr,"S%d: Thinking.\n", i);	
 			printf("S%d: Thinking.\n", i);
 		}
 	}
+	fprintf(fptr,"---------------------------------------------\n");	
 	printf("---------------------------------------------\n");
+	fclose(fptr);
+	pthread_rwlock_unlock(&rwlock);
 }
 
 void think(int philosopherNumber) {
 	int sleepTime = 2;
-	// printf("Philosopher %d will think for %d seconds\n", philosopherNumber, sleepTime);
 	if(stat[philosopherNumber]!=4) {
 		stat[philosopherNumber]=4;
 		print_status();
@@ -54,37 +66,27 @@ void pickUp(int philosopherNumber) {
 	int right = (philosopherNumber + 1) % NUMBER_OF_PHILOSOPHERS;
 	int left = (philosopherNumber + NUMBER_OF_PHILOSOPHERS) % NUMBER_OF_PHILOSOPHERS;
 	if (philosopherNumber & 1) {
-		// printf("Philosopher %d is waiting to pick up chopstick %d\n", philosopherNumber, right);
 		pthread_mutex_lock(&chopsticks[right]);
 		stat[philosopherNumber]=2;
 		print_status();
-		// printf("Philosopher %d picked up chopstick %d\n", philosopherNumber, right);
-		// printf("Philosopher %d is waiting to pick up chopstick %d\n", philosopherNumber, left);
 		pthread_mutex_lock(&chopsticks[left]);
-		// printf("Philosopher %d picked up chopstick %d\n", philosopherNumber, left);
 	}
 	else {
-		// printf("Philosopher %d is waiting to pick up chopstick %d\n", philosopherNumber, left);
 		pthread_mutex_lock(&chopsticks[left]);
 		stat[philosopherNumber]=2;
 		print_status();
-		// printf("Philosopher %d picked up chopstick %d\n", philosopherNumber, left);
-		// printf("Philosopher %d is waiting to pick up chopstick %d\n", philosopherNumber, right);
 		pthread_mutex_lock(&chopsticks[right]);
-		// printf("Philosopher %d picked up chopstick %d\n", philosopherNumber, right);
 	}
 }
 
 void eat(int philosopherNumber) {
 	int eatTime = 20;
-	// printf("Philosopher %d will eat for %d seconds\n", philosopherNumber, eatTime);
 	stat[philosopherNumber]=3;
 	print_status();
 	sleep(eatTime);
 }
 
 void putDown(int philosopherNumber) {
-	// printf("Philosopher %d will will put down her chopsticks\n", philosopherNumber);
 	pthread_mutex_unlock(&chopsticks[(philosopherNumber + 1) % NUMBER_OF_PHILOSOPHERS]);
 	pthread_mutex_unlock(&chopsticks[(philosopherNumber + NUMBER_OF_PHILOSOPHERS) % NUMBER_OF_PHILOSOPHERS]);
 }
@@ -101,16 +103,10 @@ void *philosopher(void *philosopherNumber) {
 }
 
 int main() {
-	a[0]=0;
-	a[1]=1;
-	a[2]=2;
-	a[3]=3;
-	a[4]=4;
-	stat[0]=1;
-	stat[1]=1;
-	stat[2]=1;
-	stat[3]=1;
-	stat[4]=1;
+	for(int i=0;i< NUMBER_OF_PHILOSOPHERS;i++) {
+		a[i]=i;
+		stat[i]=1;
+	}
 	print_status();
 	int i;
 	srand(time(NULL));
