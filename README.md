@@ -13,6 +13,35 @@ Instructor: Dr. Aditya Nigam
 
 Assignment problem sheet: [Assignment Questions](https://drive.google.com/file/d/1QdCapIXOi28YPmmpFEJ9avKOisWNZz5y/view?usp=sharing)
 
+### Requirements
+gcc version: 9.3
+
+**Libraries used-**
+
+Q1: Creating a shell.
+1. #include <sys/wait.h>
+2. #include <sys/types.h>
+3. #include <unistd.h>
+4. #include <stdlib.h>
+5. #include <stdio.h>
+6. #include <string.h>
+7. #include <dirent.h>
+
+Q2: Dining students problem
+1. #include <pthread.h>
+2. #include <stdio.h>
+3. #include <unistd.h>
+4. #include <time.h>
+5. #include <stdlib.h>
+
+Q3: Matrix Multiplication
+1. #include<bits/stdc++.h>
+2. #include<pthread.h>
+3. #include<time.h>
+4. #include<iostream>
+5. #include<stdio.h>
+6. #include<stdlib.h>
+  
 ### Q1. Creating a shell.
 In this question we have to create a shell which supports the following commands:
 1. clr: To clear the screen.
