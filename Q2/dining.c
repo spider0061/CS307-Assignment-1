@@ -24,7 +24,7 @@ int stat[5];
 
 void print_status() {
     pthread_rwlock_wrlock(&rwlock);
-    fptr = fopen("log5.txt", "a");
+    fptr = fopen("file_name", "a");
     for (int i = 0; i < NUMBER_OF_PHILOSOPHERS; ++i) {
 		if(stat[i]==1) {
 			fprintf(fptr,"S%d: Waiting for spoons.\n", i);
