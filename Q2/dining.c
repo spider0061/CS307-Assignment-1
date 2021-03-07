@@ -1,3 +1,4 @@
+// Importint Libraries
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -10,22 +11,29 @@
 // 3. Both spoons acquired and eating
 // 4. Thinking (< 2 seconds)
 
+// File pointer to store in log files
 FILE *fptr;
 
-#define NUMBER_OF_PHILOSOPHERS 5
+// Number of students
+#define no_of_students 5
+
+// Array of students
 int a[5];
 
-pthread_mutex_t chopsticks[NUMBER_OF_PHILOSOPHERS];
-pthread_t philosophers[NUMBER_OF_PHILOSOPHERS];
-pthread_attr_t attributes[NUMBER_OF_PHILOSOPHERS];
+// Mutex locks for spoons and read write lock for writing in file
+pthread_mutex_t spoons[no_of_students];
+pthread_t students[no_of_students];
+pthread_attr_t features[no_of_students];
 pthread_rwlock_t rwlock = PTHREAD_RWLOCK_INITIALIZER;
 
+// Status of each student
 int stat[5]; 
 
+// Function to print status and write in log file
 void print_status() {
     pthread_rwlock_wrlock(&rwlock);
     fptr = fopen("file_name", "a");
-    for (int i = 0; i < NUMBER_OF_PHILOSOPHERS; ++i) {
+    for (int i = 0; i < no_of_students; ++i) {
 		if(stat[i]==1) {
 			fprintf(fptr,"S%d: Waiting for spoons.\n", i);
 			printf("S%d: Waiting for spoons.\n", i);
@@ -49,51 +57,55 @@ void print_status() {
 	pthread_rwlock_unlock(&rwlock);
 }
 
-void think(int philosopherNumber) {
+//Function when a student thinks
+void think(int studentNumber) {
 	int sleepTime = 2;
-	if(stat[philosopherNumber]!=4) {
-		stat[philosopherNumber]=4;
+	if(stat[studentNumber]!=4) {
+		stat[studentNumber]=4;
 		print_status();
 	}
 	sleep(sleepTime);
-	if(stat[philosopherNumber]!=1) {
-		stat[philosopherNumber]=1;
+	if(stat[studentNumber]!=1) {
+		stat[studentNumber]=1;
 		print_status();
 	}
 }
 
-void pickUp(int philosopherNumber) {
-	int right = (philosopherNumber + 1) % NUMBER_OF_PHILOSOPHERS;
-	int left = (philosopherNumber + NUMBER_OF_PHILOSOPHERS) % NUMBER_OF_PHILOSOPHERS;
-	if (philosopherNumber & 1) {
-		pthread_mutex_lock(&chopsticks[right]);
-		stat[philosopherNumber]=2;
+// Function to pick up a spoon
+void pickUp(int studentNumber) {
+	int right = (studentNumber + 1) % no_of_students;
+	int left = (studentNumber + no_of_students) % no_of_students;
+	if (studentNumber & 1) {
+		pthread_mutex_lock(&spoons[right]);
+		stat[studentNumber]=2;
 		print_status();
-		pthread_mutex_lock(&chopsticks[left]);
+		pthread_mutex_lock(&spoons[left]);
 	}
 	else {
-		pthread_mutex_lock(&chopsticks[left]);
-		stat[philosopherNumber]=2;
+		pthread_mutex_lock(&spoons[left]);
+		stat[studentNumber]=2;
 		print_status();
-		pthread_mutex_lock(&chopsticks[right]);
+		pthread_mutex_lock(&spoons[right]);
 	}
 }
 
-void eat(int philosopherNumber) {
+// Function to start eating
+void eat(int studentNumber) {
 	int eatTime = 20;
-	stat[philosopherNumber]=3;
+	stat[studentNumber]=3;
 	print_status();
 	sleep(eatTime);
 }
 
-void putDown(int philosopherNumber) {
-	pthread_mutex_unlock(&chopsticks[(philosopherNumber + 1) % NUMBER_OF_PHILOSOPHERS]);
-	pthread_mutex_unlock(&chopsticks[(philosopherNumber + NUMBER_OF_PHILOSOPHERS) % NUMBER_OF_PHILOSOPHERS]);
+// Function to put down spoons after eating
+void putDown(int studentNumber) {
+	pthread_mutex_unlock(&spoons[(studentNumber + 1) % no_of_students]);
+	pthread_mutex_unlock(&spoons[(studentNumber + no_of_students) % no_of_students]);
 }
 
-
-void *philosopher(void *philosopherNumber) {
-	int *ptr = (int *) philosopherNumber;
+// Initial function for each student
+void *student(void *studentNumber) {
+	int *ptr = (int *) studentNumber;
 	while (1) {
 		pickUp(*ptr);
 		eat(*ptr);
@@ -102,31 +114,37 @@ void *philosopher(void *philosopherNumber) {
 	}
 }
 
+// Main function
 int main() {
-	for(int i=0;i< NUMBER_OF_PHILOSOPHERS;i++) {
+	for(int i=0;i< no_of_students;i++) {
 		a[i]=i;
 		stat[i]=1;
 	}
 	print_status();
 	int i;
 	srand(time(NULL));
-	for (i = 0; i < NUMBER_OF_PHILOSOPHERS; ++i) {
-		pthread_mutex_init(&chopsticks[i], NULL);
+	for (i = 0; i < no_of_students; ++i) {
+		pthread_mutex_init(&spoons[i], NULL);
 	}
 
-	for (i = 0; i < NUMBER_OF_PHILOSOPHERS; ++i) {
-		pthread_attr_init(&attributes[i]);
+	for (i = 0; i < no_of_students; ++i) {
+		pthread_attr_init(&features[i]);
 	}
 	
-	pthread_create(&philosophers[0], &attributes[0], philosopher, (void *)(&a[0]));
-	pthread_create(&philosophers[1], &attributes[1], philosopher, (void *)(&a[1]));
-	pthread_create(&philosophers[2], &attributes[2], philosopher, (void *)(&a[2]));
-	pthread_create(&philosophers[3], &attributes[3], philosopher, (void *)(&a[3]));
-	pthread_create(&philosophers[4], &attributes[4], philosopher, (void *)(&a[4]));
+	// Creating threads
+	pthread_create(&students[0], &features[0], student, (void *)(&a[0]));
+	pthread_create(&students[1], &features[1], student, (void *)(&a[1]));
+	pthread_create(&students[2], &features[2], student, (void *)(&a[2]));
+	pthread_create(&students[3], &features[3], student, (void *)(&a[3]));
+	pthread_create(&students[4], &features[4], student, (void *)(&a[4]));
 	
-
-	for (i = 0; i < NUMBER_OF_PHILOSOPHERS; ++i) {
-		pthread_join(philosophers[i], NULL);
-	}
+	// Waiting for all threads to complete execution
+	pthread_join(students[0], NULL);
+	pthread_join(students[1], NULL);
+	pthread_join(students[2], NULL);
+	pthread_join(students[3], NULL);
+	pthread_join(students[4], NULL);
+	
+	// Return 0 after successful execution
 	return 0;
 }

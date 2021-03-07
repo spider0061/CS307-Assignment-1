@@ -1,0 +1,30 @@
+S0: Waiting for spoons.
+S1: Waiting for spoons.
+S2: Waiting for spoons.
+S3: Waiting for spoons.
+S4: Waiting for spoons.
+---------------------------------------------
+S0: Waiting for spoons.
+S1: Waiting for spoons.
+S2: One spoon acquired.
+S3: Waiting for spoons.
+S4: One spoon acquired.
+---------------------------------------------
+S0: Waiting for spoons.
+S1: Waiting for spoons.
+S2: Both spoons acquired and eating.
+S3: Waiting for spoons.
+S4: One spoon acquired.
+---------------------------------------------
+S0: Waiting for spoons.
+S1: Waiting for spoons.
+S2: Both spoons acquired and eating.
+S3: Waiting for spoons.
+S4: One spoon acquired.
+---------------------------------------------
+S0: Waiting for spoons.
+S1: Waiting for spoons.
+S2: Both spoons acquired and eating.
+S3: Waiting for spoons.
+S4: Both spoons acquired and eating.
+---------------------------------------------
