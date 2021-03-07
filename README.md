@@ -94,5 +94,5 @@ Discuss your inferences.
 **Steps to run the program:**
 1. Enter the Q3 folder.
 2. Type make on terminal.
-3. Then type "./simp" on terminal for simple multiplication.
-4. Then type "./base" on terminal for parallel multiplication.
+3. Then type "./simp <argument>" on terminal for simple multiplication.
+4. Then type "./base <argument>" on terminal for parallel multiplication.
