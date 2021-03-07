@@ -2,6 +2,15 @@
 ### This repository is dedicated for assignment 1 of CS307 course.
 Instructor: Dr. Aditya Nigam
 
+
+### Team Members
+
+|   | Name | Roll No.  |
+|--------|--------|--------|
+|A| Ashutosh Sharma  | B18010 |
+|B| Anuj Goel    | B18161  |
+|C| Om Pandey | B18182  |
+
 Assignment problem sheet: [Assignment Questions](https://drive.google.com/file/d/1QdCapIXOi28YPmmpFEJ9avKOisWNZz5y/view?usp=sharing)
 
 ### Q1. Creating a shell.
