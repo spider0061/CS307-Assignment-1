@@ -3,7 +3,7 @@
 Instructor: Dr. Aditya Nigam
 
 
-# Team Members
+### Team Members
 
 |   | Name | Roll No.  |
 |--------|--------|--------|
