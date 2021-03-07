@@ -71,7 +71,7 @@ each student:
 3. Both spoons acquired and Eating (20 seconds)
 4. Thinking (< 2 seconds)
   
-**Steps to run the shell:**
+**Steps to run the program:**
 1. Enter the Q2 folder.
 2. Type make on terminal.
 3. Then type "./prog" on terminal.
@@ -91,7 +91,7 @@ Create a report which includes the graph of input size (n) vs running times for 
 programs. Run each program at least 5 times and use average running time for analysis.
 Discuss your inferences.
 
-**Steps to run the shell:**
+**Steps to run the program:**
 1. Enter the Q3 folder.
 2. Type make on terminal.
 3. Then type "./simp" on terminal for simple multiplication.
