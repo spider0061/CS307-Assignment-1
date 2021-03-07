@@ -28,7 +28,7 @@ In this question we have to create a shell which supports the following commands
 11. Shell can take commands from a batchfile.
 
 **Steps to run the shell:**
-1. Enter the q1 folder.
+1. Enter the Q1 folder.
 2. Type "make" on terminal.
 3. Then type "./shell" on terminal. or type "./shell <batch-file-name>" if you have a batch-file.
 4. The shell is running.
@@ -43,7 +43,7 @@ each student:
 4. Thinking (< 2 seconds)
   
 **Steps to run the shell:**
-1. Enter the q2 folder.
+1. Enter the Q2 folder.
 2. Type make on terminal.
 3. Then type "./prog" on terminal.
 4. The program is running and it will output the initial states of all students and when state od any student changes.
@@ -63,7 +63,7 @@ programs. Run each program at least 5 times and use average running time for ana
 Discuss your inferences.
 
 **Steps to run the shell:**
-1. Enter the q3 folder.
+1. Enter the Q3 folder.
 2. Type make on terminal.
 3. Then type "./simp" on terminal for simple multiplication.
 4. Then type "./base" on terminal for parallel multiplication.
