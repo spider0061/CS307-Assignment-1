@@ -136,7 +136,7 @@ int shell_quit(char **args)
 */
 int shell_clr(char **args)
 {
-  system("clear"); 
+  printf("\033[H\033[J");
   return 1;
 }
 
