@@ -22,6 +22,7 @@ int a[5];
 
 // Mutex locks for spoons and read write lock for writing in file
 pthread_mutex_t spoons[no_of_students];
+pthread_mutex_t print_lock;
 pthread_t students[no_of_students];
 pthread_attr_t features[no_of_students];
 pthread_rwlock_t rwlock = PTHREAD_RWLOCK_INITIALIZER;
@@ -32,7 +33,7 @@ int stat[5];
 // Function to print status and write in log file
 void print_status() {
     pthread_rwlock_wrlock(&rwlock);
-    fptr = fopen("file_name", "a");
+    fptr = fopen("file_name.txt", "a");
     for (int i = 0; i < no_of_students; ++i) {
 		if(stat[i]==1) {
 			fprintf(fptr,"S%d: Waiting for spoons.\n", i);
@@ -61,13 +62,23 @@ void print_status() {
 void think(int studentNumber) {
 	int sleepTime = 2;
 	if(stat[studentNumber]!=4) {
+
+
+		pthread_mutex_lock(&print_lock);
 		stat[studentNumber]=4;
 		print_status();
+		pthread_mutex_unlock(&print_lock);
+
 	}
 	sleep(sleepTime);
 	if(stat[studentNumber]!=1) {
+
+
+		pthread_mutex_lock(&print_lock);
 		stat[studentNumber]=1;
 		print_status();
+		pthread_mutex_unlock(&print_lock);
+
 	}
 }
 
@@ -77,14 +88,22 @@ void pickUp(int studentNumber) {
 	int left = (studentNumber + no_of_students) % no_of_students;
 	if (studentNumber & 1) {
 		pthread_mutex_lock(&spoons[right]);
+		
+		pthread_mutex_lock(&print_lock);
 		stat[studentNumber]=2;
 		print_status();
+		pthread_mutex_unlock(&print_lock);
+		
 		pthread_mutex_lock(&spoons[left]);
 	}
 	else {
 		pthread_mutex_lock(&spoons[left]);
+
+		pthread_mutex_lock(&print_lock);
 		stat[studentNumber]=2;
 		print_status();
+		pthread_mutex_unlock(&print_lock);
+
 		pthread_mutex_lock(&spoons[right]);
 	}
 }
@@ -92,8 +111,12 @@ void pickUp(int studentNumber) {
 // Function to start eating
 void eat(int studentNumber) {
 	int eatTime = 20;
+
+	pthread_mutex_lock(&print_lock);
 	stat[studentNumber]=3;
 	print_status();
+	pthread_mutex_unlock(&print_lock);
+	
 	sleep(eatTime);
 }
 
